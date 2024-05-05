@@ -14,3 +14,7 @@ urlpatterns = [
     path('delete/account', views.delete_account, name="delete_account"),
     path('logout', views.logout_view, name="logout"),
 ]
+
+# Define the custom error handlers
+handler404 = views.handler404
+handler500 = views.handler500

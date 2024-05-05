@@ -12,7 +12,18 @@ from .models import User
 # Create your views here.
 def index(request):
     context = {"user": request.user}
-    return render(request, "core/index.html", context)
+
+    if request.user.is_authenticated:
+        return render(request, "core/index.html", context)
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
+
+def handler500(request):
+    return render(request, '500.html', status=500)
 
 
 class EditInfoView(UpdateView):
@@ -24,7 +35,7 @@ class EditInfoView(UpdateView):
 def logout_view(request):
     ''' logout the user '''
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("login"))
 
 
 def login_view(request):

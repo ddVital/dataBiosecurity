@@ -37,6 +37,7 @@ class User(AbstractUser):
         ('AB-', 'AB-'),
         ('O+', 'O+'),
         ('O-', 'O-'),
+        ('nao_sei', 'Não sei'),
     ]
 
     ALERGIAS_CHOICES = [
@@ -50,6 +51,7 @@ class User(AbstractUser):
         ('parda', 'Parda'),
         ('amarela', 'Amarela'),
         ('indigena', 'Indígena'),
+        ('outro', 'Outro'),
     ]
 
     ESTADO_CIVIL_CHOICES = [
@@ -73,7 +75,7 @@ class User(AbstractUser):
     escolaridade = models.CharField(default="",max_length=20, choices=ESCOLARIDADE_CHOICES)
     aluno_udc = models.CharField(default="",max_length=3, choices=ALUNO_UDC_CHOICES)
     genero = models.CharField(default="",max_length=10, choices=GENERO_CHOICES)
-    tipo_sanguineo = models.CharField(default="",max_length=3, choices=TIPO_SANGUINEO_CHOICES)
+    tipo_sanguineo = models.CharField(default="",max_length=7, choices=TIPO_SANGUINEO_CHOICES)
     alergias = models.CharField(default="nao", max_length=3, choices=ALERGIAS_CHOICES)
     alergia_descricao = models.CharField(max_length=100, blank=True, null=True)
     raca = models.CharField(default="",max_length=10, choices=RACA_CHOICES)

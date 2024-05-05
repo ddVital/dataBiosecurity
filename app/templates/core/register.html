@@ -8,12 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
 
-  {% if user.theme == 'dark' %} {% else %}
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  {% endif %}
-
-  <script src="{% static 'js/main.js' %}" defer></script>
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 
   <style>
     .errorlist {
@@ -31,104 +27,20 @@
       {% if error %}
         <p class="my-1 text-red-500 font-medium">{{ error }}</p>
       {% endif %}
-        <!-- <div class="field">
-          {{ form.username }}
-          {{ form.username.errors }}
-        </div>
-        <div class="two-fields">
-          <div class="field">
-              {{ form.first_name }}
-              {{ form.first_name.errors }}
-          </div>
-        </div>
-        <div class="field">
-          {{ form.email }}
-          {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.cpf }}
-            {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.nascimento }}
-            {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.endereco }}
-            {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.contato }}
-            {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.contato_emergencia }}
-            {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.rede_social }}
-            {{ form.email.errors }}
-        </div>
-        <div class="field">
-            {{ form.genero }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.escolaridade }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.aluno_utc }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.tipo_sanguineo }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.alergias }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.alergia_descricao }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.raca }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.profissao }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.estado_civil }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.filho }}
-            {{ form.email.errors }}
-          </div>
-          <div class="field">
-            {{ form.qtd_filhos }}
-            {{ form.email.errors }}
-          </div>
-        <div class="field">
-          {{ form.password }}
-          {{ form.password.errors }}
-        </div>
-        <div class="field">
-          {{ form.confirmation }}
-          {{ form.confirmation.errors }}
-        </div> -->
 
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full cursor-pointer">Criar conta</button>
+        <!-- Checkbox for accepting terms -->
+        <label class="my-5 flex items-center mt-4">
+          <input type="checkbox" id="acceptTerms" class="form-checkbox h-5 w-5 text-blue-600">
+          <span class="ml-2 text-sm text-gray-600">Eu concordo com os termos e condições</span>
+        </label>
+
+        <button type="submit" id="btn-submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full cursor-pointer">Criar conta</button>
         
         {% if error %}
           <p class="my-1 text-red-500 font-medium">{{ error }}</p>
         {% endif %}
 
-        <div class="auth__redirect subtext">
+        <div class="my-4">
           <p>
             Já tem uma conta?
             <a href="{% url 'login' %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
@@ -141,6 +53,7 @@
         </div>
       </form>
     </main>
-  </section>
+
+  <script src="{% static 'js/main.js' %}" defer></script>
 </body>
 </html>

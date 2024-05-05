@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
+import re
 
 from .models import User
 
@@ -86,29 +87,29 @@ class Register_form(forms.ModelForm):
             # Add labels for other fields if needed
         }
 
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off', 'autofocus': 'on'}), max_length=16, label="Nome de usuário")
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'maxlenght': "50", 'autocomplete': 'off'}), label="Nome")
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'maxlenght': "50", 'autocomplete': 'off'}), label="Sobrenome")
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off'}), label="Email")
-    cpf = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=14, label="CPF")
-    nascimento = forms.DateField(widget=forms.DateInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'type': 'date'}), label="Nascimento")
-    endereco = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=100, label="Endereço")
-    contato = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=15, label="Contato")
-    contato_emergencia = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=15, label="Contato emergência")
-    rede_social = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=100, required=False, label="Rede social")
-    escolaridade = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ESCOLARIDADE_CHOICES, label="Escolaridade")
-    aluno_udc = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ALUNO_UDC_CHOICES, label="Aluno da UDC")
-    genero = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.GENERO_CHOICES, label="Gênero")
-    tipo_sanguineo = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.TIPO_SANGUINEO_CHOICES, label="Tipo sanguíneo")
-    alergias = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ALERGIAS_CHOICES, label="Alergias")
-    alergia_descricao = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), max_length=100, required=False, label="Descrição alergias")
-    raca = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.RACA_CHOICES, label="Raça")
-    profissao = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=50, label="Profissão")
-    estado_civil = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ESTADO_CIVIL_CHOICES, label="Estado civil")
-    filho = forms.ChoiceField(widget=forms.Select(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.FILHO_CHOICES, label="Possuí filhos?")
-    qtd_filhos = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), required=False, label="Quantidade de filhos")
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off'}), label="Senha")
-    confirmation = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off'}), label="Confirme a senha")
+    username = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_username', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off', 'autofocus': 'on'}), max_length=16, label="Nome de usuário")
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_first_name', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'maxlenght': "50", 'autocomplete': 'off'}), label="Nome")
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_last_name', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'maxlenght': "50", 'autocomplete': 'off'}), label="Sobrenome")
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'id': 'id_email', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off'}), label="Email")
+    cpf = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_cpf', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'max_length': '14'}), max_length=14, label="CPF")
+    nascimento = forms.DateField(widget=forms.DateInput(attrs={'id': 'id_nascimento', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'type': 'date'}), label="Nascimento")
+    endereco = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_endereco', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=100, label="Endereço")
+    contato = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_contato', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=15, label="Contato")
+    contato_emergencia = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_contato_emergencia', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=15, label="Contato emergência")
+    rede_social = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_rede_social', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=100, required=False, label="Rede social")
+    escolaridade = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_escolaridade', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ESCOLARIDADE_CHOICES, label="Escolaridade")
+    aluno_udc = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_aluno_udc', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ALUNO_UDC_CHOICES, label="Aluno da UDC")
+    genero = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_genero', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.GENERO_CHOICES, label="Gênero")
+    tipo_sanguineo = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_tipo_sanguineo', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.TIPO_SANGUINEO_CHOICES, label="Tipo sanguíneo")
+    alergias = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_alergias', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ALERGIAS_CHOICES, label="Alergias")
+    alergia_descricao = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_alergia_descricao', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), max_length=100, required=False, label="Descrição alergias")
+    raca = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_raca', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.RACA_CHOICES, label="Raça")
+    profissao = forms.CharField(widget=forms.TextInput(attrs={'id': 'id_profissao', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500',}), max_length=50, label="Profissão")
+    estado_civil = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_estado_civil', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.ESTADO_CIVIL_CHOICES, label="Estado civil")
+    filho = forms.ChoiceField(widget=forms.Select(attrs={'id': 'id_filho', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), choices=User.FILHO_CHOICES, label="Possuí filhos?")
+    qtd_filhos = forms.IntegerField(widget=forms.NumberInput(attrs={'id': 'id_qtd_filhos', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'}), required=False, label="Quantidade de filhos")
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_password', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off'}), label="Senha")
+    confirmation = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'id_confirmation', 'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'autocomplete': 'off'}), label="Confirme a senha")
 
     
     def clean_username(self):
@@ -125,6 +126,20 @@ class Register_form(forms.ModelForm):
             raise forms.ValidationError(_("Email já cadastrado."), code="email taken")
 
         return email
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data['cpf']
+        cpf = re.sub('[^0-9]', '', cpf)  # Remove non-numeric characters
+        if len(cpf) != 11:
+            raise forms.ValidationError("CPF must contain 11 digits.")
+        
+        cpf = cpf[:3] + '.' + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]  # Format CPF with dots and hyphen
+        
+        # CPF validation algorithm
+        # Implement your CPF validation algorithm here
+        
+        return cpf
+    
 
     def save(self):
         user = User.objects.create_user(
@@ -156,6 +171,7 @@ class Register_form(forms.ModelForm):
     
 
 class UserEditForm(UserChangeForm):
+    password = None
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'cpf', 'nascimento', 'endereco', 'contato', 'contato_emergencia', 'rede_social', 'escolaridade', 'aluno_udc', 'genero', 'tipo_sanguineo', 'alergias', 'alergia_descricao', 'raca', 'profissao', 'estado_civil', 'filho', 'qtd_filhos')
@@ -168,6 +184,7 @@ class UserEditForm(UserChangeForm):
             # Add labels for other fields if needed
         }
         help_texts = {}
+        password_help_texts = {}
         label_suffix = ''  # Set label suffix to an empty string to hide all labels
 
     def __init__(self, *args, **kwargs):
