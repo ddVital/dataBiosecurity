@@ -6,9 +6,9 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import Login_form, Register_form, UserEditForm
+from .forms import Login_form, Register_form, UserEditForm, SatisfacaoForm
 
-from .models import User
+from .models import User, Satisfacao
 # Create your views here.
 def index(request):
     context = {"user": request.user}
@@ -24,6 +24,23 @@ def handler404(request, exception):
 
 def handler500(request):
     return render(request, '500.html', status=500)
+
+
+
+def satisfacao_view(request):
+    if request.method == 'POST':
+        form = SatisfacaoForm(request.POST)
+        if form.is_valid():
+            satisfacao = form.save(commit=False)
+            satisfacao.user = request.user
+            satisfacao.save()
+            return HttpResponseRedirect(reverse("agradecimentos"))
+    else:
+        form = SatisfacaoForm()
+    return render(request, 'core/satisfacao.html', {'form': form})
+
+def satisfacao_success(request):
+    return render(request, 'core/agradecimentos.html')
 
 
 class EditInfoView(UpdateView):
@@ -70,7 +87,7 @@ class Register(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("satisfacao"))
 
 
 def delete_account(request):

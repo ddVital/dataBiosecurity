@@ -86,3 +86,16 @@ class User(AbstractUser):
     
     def __str__(self):
         return self.username
+
+
+class Satisfacao(models.Model):
+    SATISFEITO_CHOICES = [
+        ('sim', 'Sim'),
+        ('nao', 'Não'),
+    ]
+
+    satisfeito = models.CharField(default="",max_length=3, choices=SATISFEITO_CHOICES)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE);
+
+    def __str__(self):
+        return f"{ self.user }, {self.satisfeito}"

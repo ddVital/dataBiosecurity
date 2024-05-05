@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 import re
 
-from .models import User
+from .models import User, Satisfacao
 
 UserModel = get_user_model()
 
@@ -210,3 +210,19 @@ class UserEditForm(UserChangeForm):
         self.fields['estado_civil'].widget.attrs.update({'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'label': ""})
         self.fields['filho'].widget.attrs.update({'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'label': ""})
         self.fields['qtd_filhos'].widget.attrs.update({'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500', 'placeholder': 'Quantidade de Filhos', 'label': ""})
+
+class SatisfacaoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'my-2 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500 focus:ring-blue-500'
+            })
+
+    class Meta:
+        model = Satisfacao
+        fields = ['satisfeito']
+        labels = {
+            'satisfeito': "Ficou satisfeito com a experiência no nosso website?"
+        }
+        
