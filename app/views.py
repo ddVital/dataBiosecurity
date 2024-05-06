@@ -19,6 +19,10 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
 
 
+def termos(request):
+    return render(request, "core/termos.html")
+
+
 def handler404(request, exception):
     return render(request, '404.html', status=404)
 

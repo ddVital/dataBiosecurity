@@ -6,7 +6,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <title>Cadastro</title>
 
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
@@ -20,6 +20,12 @@
 <body>
   <main class="min-h-screen flex justify-center items-center">
     <form action="{% url 'register' %}" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      
+      <h1 class="text-center">Biossegurança - segurança de dados 
+        1* período UDC Direito  - Práticas de Extensão I</h1>
+      <p class="my-4 text-gray-800 text-sm">
+        Esse trabalho está sendo desenvolvido na finalidade de coleta e atualização de dados, esses dados não serão divulgados, respeitando o direito de cada usuário
+      </p>
       {% csrf_token %}
         
       {{ form }}
@@ -31,7 +37,7 @@
         <!-- Checkbox for accepting terms -->
         <label class="my-5 flex items-center mt-4">
           <input type="checkbox" id="acceptTerms" class="form-checkbox h-5 w-5 text-blue-600">
-          <span class="ml-2 text-sm text-gray-600">Eu concordo com os termos e condições</span>
+          <span class="ml-2 text-sm text-gray-600">Eu concordo com os <a href="{% url 'termos' %}" class="text-blue-600 underline font-medium">termos</a> e <a href="{% url 'termos' %}" class="text-blue-600 underline font-medium">condições</a></span>
         </label>
 
         <button type="submit" id="btn-submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full cursor-pointer">Criar conta</button>

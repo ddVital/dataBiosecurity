@@ -8,6 +8,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('termos', views.termos, name="termos"),
     path('login', views.login_view, name="login"),
     path('register', Register.as_view(), name="register"),
     path('satisfacao', views.satisfacao_view, name="satisfacao"),
